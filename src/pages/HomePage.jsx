@@ -1,10 +1,24 @@
-import React from "react";
-import { articles } from "../utils/dummyData";
+import React, { useState, useEffect } from "react";
+import { fetchArticles } from "../utils/api";
 import { Link } from "react-router-dom";
 
 const categories = ["Medicine", "Law", "Tech"];
 
 export default function HomePage() {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchArticles()
+      .then((data) => setArticles(data))
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return <p className="p-6">Loading…</p>;
+  }
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">Black Canon</h1>
